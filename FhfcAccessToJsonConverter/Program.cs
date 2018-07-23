@@ -78,7 +78,7 @@ namespace FhfcAccessToJsonConverter
         private static void Main()
         {
             Console.WriteLine("Starting FhfcAccessToJsonConverter");
-            //RetrieveHomePageInfo();
+            RetrieveHomePageInfo();
             RetrieveSummaryRecords();
             RetrieveRecords();
             //RetrieveMilestones("milestones.json");
@@ -89,7 +89,7 @@ namespace FhfcAccessToJsonConverter
         private static void RetrieveHomePageInfo()
         {
             string[] homePageRecordsToDisplay = new[] { "Most Senior Games", "Most A Grade Games", "Most Club Games", "Most Junior Games", "Most Goals in a Season - Club", "Most Club Goals" };
-            string jsonToReturn = "{\"records\":[";
+            string jsonToReturn = "{\"lastUpdated\": \"" + String.Format(DateTime.Now.ToString("MMMM dd{0} yyyy"), GetDaySuffix(DateTime.Now.Day)) + "\",\"records\":[";
             foreach (KeyValuePair<string, string[]> item in RecordSqlStatements)
             {
                 if (homePageRecordsToDisplay.Contains(item.Key))
@@ -111,7 +111,7 @@ namespace FhfcAccessToJsonConverter
                     {
                         dt.Columns.Remove("Grade");
                     }
-                    jsonToReturn += "{\"name\":\"" + item.Key + "\",\"headers\":{\"c1\":\"Name\",\"c2\":\"" + item.Value[1] + "\"},\"data\":" + Newtonsoft.Json.JsonConvert.SerializeObject(dt) + "},";
+                    jsonToReturn += "{\"name\":\"" + item.Key + "\",\"label\":\"" + item.Value[1] + "\",\"data\":" + Newtonsoft.Json.JsonConvert.SerializeObject(dt) + "},";
                 }
             }
             jsonToReturn = jsonToReturn.TrimEnd(',') + "]}";
@@ -262,6 +262,24 @@ namespace FhfcAccessToJsonConverter
                 _accessConnection.Close();
             }
             return ds.Tables[0];
+        }
+        private static string GetDaySuffix(int day)
+        {
+            switch (day)
+            {
+                case 1:
+                case 21:
+                case 31:
+                    return "st";
+                case 2:
+                case 22:
+                    return "nd";
+                case 3:
+                case 23:
+                    return "rd";
+                default:
+                    return "th";
+            }
         }
     }
 }
