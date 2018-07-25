@@ -88,8 +88,8 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveHomePageInfo()
         {
-            string[] homePageRecordsToDisplay = new[] { "Most Senior Games", "Most A Grade Games", "Most Club Games", "Most Junior Games", "Most Goals in a Season - Club", "Most Club Goals" };
-            string jsonToReturn = "{\"lastUpdated\": \"" + String.Format(DateTime.Now.ToString("MMMM dd{0} yyyy"), GetDaySuffix(DateTime.Now.Day)) + "\",\"records\":[";
+            string[] homePageRecordsToDisplay = new[] { "Most Senior Games", "Most A Grade Games", "Most Junior Games", "Most Junior Goals", "Most Goals in a Season - Senior", "Most A Grade Goals" };
+            string jsonToReturn = "{\"records\":[";
             foreach (KeyValuePair<string, string[]> item in RecordSqlStatements)
             {
                 if (homePageRecordsToDisplay.Contains(item.Key))
@@ -115,7 +115,8 @@ namespace FhfcAccessToJsonConverter
                 }
             }
             jsonToReturn = jsonToReturn.TrimEnd(',') + "]}";
-            SaveJsonToFile(jsonToReturn, "homePageInfo.json");
+            SaveJsonToFile(jsonToReturn, "homeRecords.json");
+            SaveJsonToFile("{\"lastUpdated\":\"" + String.Format(DateTime.Now.ToString("MMMM dd{0} yyyy"), GetDaySuffix(DateTime.Now.Day)) + "\"}", "lastUpdated.json");
         }
         private static void RetrieveSummaryRecords()
         {
