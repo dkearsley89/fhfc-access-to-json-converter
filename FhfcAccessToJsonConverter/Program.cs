@@ -116,7 +116,7 @@ namespace FhfcAccessToJsonConverter
             }
             jsonToReturn = jsonToReturn.TrimEnd(',') + "]}";
             SaveJsonToFile(jsonToReturn, "homeRecords.json");
-            SaveJsonToFile("{\"lastUpdated\":\"" + String.Format(DateTime.Now.ToString("MMMM dd{0} yyyy"), GetDaySuffix(DateTime.Now.Day)) + "\"}", "lastUpdated.json");
+            SaveJsonToFile("{\"lastUpdated\":\"" + String.Format(DateTime.Now.ToString("MMMM d{0} yyyy"), GetDaySuffix(DateTime.Now.Day)) + "\"}", "lastUpdated.json");
         }
         private static void RetrieveSummaryRecords()
         {
