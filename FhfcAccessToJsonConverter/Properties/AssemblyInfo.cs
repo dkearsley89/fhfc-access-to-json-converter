@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FhfcAccessToJsonConverter")]
-[assembly: AssemblyCopyright("Copyright © David Kearsley 2018")]
+[assembly: AssemblyCopyright("Copyright © David Kearsley 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("771797f1-2d97-4218-8352-2679075211bd")]
+[assembly: Guid("4e419471-a9b8-4816-972a-69781855d023")]
 // Version information for an assembly consists of the following four values:
 //      Major Version
 //      Minor Version
