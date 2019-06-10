@@ -14,11 +14,11 @@ namespace FhfcAccessToJsonConverter
         {
             {"Most Senior Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT((SUM(Games.a)+SUM(Games.b)+SUM(Games.c)+SUM(Games.openW)+SUM(Games.unknown_Senior))) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.a)+SUM(Games.b)+SUM(Games.c)+SUM(Games.openW)+SUM(Games.unknown_Senior) > 0 ORDER BY (SUM(Games.a)+SUM(Games.b)+SUM(Games.c)+SUM(Games.openW)+SUM(Games.unknown_Senior)) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
             {"Most Club Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT((SUM(Games.a)+SUM(Games.b)+SUM(Games.c)+SUM(Games.openW)+SUM(Games.[18])+SUM(Games.[17_5])+SUM(Games.[17])+SUM(Games.[16])+SUM(Games.[16sun])+SUM(Games.[15])+SUM(Games.[15sun])+SUM(Games.[14])+SUM(Games.[14Girls])+SUM(Games.[14sun])+SUM(Games.[13])+SUM(Games.unknown_Senior)+SUM(Games.unknown_Junior))) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName ORDER BY (SUM(Games.a)+SUM(Games.b)+SUM(Games.c)+SUM(Games.openW)+SUM(Games.[18])+SUM(Games.[17_5])+SUM(Games.[17])+SUM(Games.[16])+SUM(Games.[16sun])+SUM(Games.[15])+SUM(Games.[15sun])+SUM(Games.[14])+SUM(Games.[14Girls])+SUM(Games.[14sun])+SUM(Games.[13])+SUM(Games.unknown_Senior)+SUM(Games.unknown_Junior)) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
-            {"Most A Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.a)) AS a FROM Games INNER JOIN[FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.a) > 0 ORDER BY SUM(Games.a) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
+            {"Most A Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.a)) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.a) > 0 ORDER BY SUM(Games.a) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
 
-            {"Most B Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.b)) AS a FROM Games INNER JOIN[FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.b) > 0 ORDER BY SUM(Games.b) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
-            {"Most C Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.c)) AS a FROM Games INNER JOIN[FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.c) > 0 ORDER BY SUM(Games.c) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
-            {"Most Open Women's Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.openW)) AS a FROM Games INNER JOIN[FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.openW) > 0 ORDER BY SUM(Games.openW) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
+            {"Most B Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.b)) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.b) > 0 ORDER BY SUM(Games.b) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
+            {"Most C Grade Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.c)) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.c) > 0 ORDER BY SUM(Games.c) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
+            {"Most Open Women's Games", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Games.openW)) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Games.openW) > 0 ORDER BY SUM(Games.openW) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Games" } },
 
             {"Most Senior Goals", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Goals)) AS a FROM [Games Details Per Round] INNER JOIN [FHFC Membership List] ON [Games Details Per Round].ID = [FHFC Membership List].ID WHERE [Games Details Per Round].Grade = 'A' OR [Games Details Per Round].Grade = 'B' OR [Games Details Per Round].Grade = 'C' OR [Games Details Per Round].Grade = 'OpenW' GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Goals) > 0 ORDER BY SUM(Goals) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Goals" } },
             {"Most Club Goals", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Goals)) AS a FROM [Games Details Per Round] INNER JOIN [FHFC Membership List] ON [Games Details Per Round].ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Goals) > 0 ORDER BY SUM(Goals) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Goals" } },
@@ -58,7 +58,7 @@ namespace FhfcAccessToJsonConverter
 
             {"Most Goals in a Season - Junior", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, Year, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, CINT(SUM(Goals)) AS a FROM [Games Details Per Round] INNER JOIN [FHFC Membership List] ON [Games Details Per Round].ID = [FHFC Membership List].ID WHERE [Games Details Per Round].Grade = 'U18' OR [Games Details Per Round].Grade = 'U17.5' OR [Games Details Per Round].Grade = 'U16' OR [Games Details Per Round].Grade = 'U16sun' OR [Games Details Per Round].Grade = 'U15' OR [Games Details Per Round].Grade = 'U15sun' OR [Games Details Per Round].Grade = 'U14' OR [Games Details Per Round].Grade = 'U14sun' OR [Games Details Per Round].Grade = 'U14Girls' OR [Games Details Per Round].Grade = 'U13' GROUP BY [FHFC Membership List].id, Year, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING SUM(Goals) > 0 ORDER BY SUM(Goals) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Goals" } },
             {"Most Goals in a Game - Junior", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, Year, Round, Grade, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, Goals AS a FROM [Games Details Per Round] INNER JOIN [FHFC Membership List] ON [Games Details Per Round].ID = [FHFC Membership List].ID WHERE [Games Details Per Round].Grade = 'U18' OR [Games Details Per Round].Grade = 'U17.5' OR [Games Details Per Round].Grade = 'U16' OR [Games Details Per Round].Grade = 'U16sun' OR [Games Details Per Round].Grade = 'U15' OR [Games Details Per Round].Grade = 'U15sun' OR [Games Details Per Round].Grade = 'U14' OR [Games Details Per Round].Grade = 'U14sun' OR [Games Details Per Round].Grade = 'U14Girls' OR [Games Details Per Round].Grade = 'U13' GROUP BY [FHFC Membership List].id, Year, Round, Grade, Goals, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName HAVING Goals > 0 ORDER BY Goals DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Goals" } },
-            {"Most Seasons Played", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, COUNT(Games.Id) AS a FROM Games INNER JOIN[FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName ORDER BY COUNT(Games.Id) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Seasons" } }
+            {"Most Seasons Played", new [] { "SELECT TOP [NumberOfRecords] [FHFC Membership List].id AS Id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName AS n, COUNT(Games.Id) AS a FROM Games INNER JOIN [FHFC Membership List] ON Games.ID = [FHFC Membership List].ID GROUP BY [FHFC Membership List].id, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName ORDER BY COUNT(Games.Id) DESC, [FHFC Membership List].firstName & \" \" & [FHFC Membership List].lastName", "Seasons" } }
         };
         //private readonly static Dictionary<string, string> _milestoneSqlStatements = new Dictionary<string, string>()
         //{
@@ -83,6 +83,7 @@ namespace FhfcAccessToJsonConverter
             RetrieveRecords();
             //RetrieveMilestones("milestones.json");
             RetrievePlayers("players.json");
+            RetrievePlayerIndividualInfo();
             Console.WriteLine("Finishing FhfcAccessToJsonConverter");
             Console.Read();
         }
@@ -226,7 +227,56 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrievePlayers(string fileName)
         {
-            SaveJsonToFile("{\"players\":" + Newtonsoft.Json.JsonConvert.SerializeObject(QueryAccessDatabase("SELECT DISTINCT [Games].Id AS id, FirstName & ' ' & LastName AS name FROM [FHFC Membership List] INNER JOIN [Games] ON Games.Id = [FHFC Membership List].Id WHERE [Games].Id <> 1001")) + "}", fileName);
+            DataTable dt = QueryAccessDatabase("SELECT DISTINCT[Games].Id AS id, FirstName & ' ' & LastName AS name, LastName, FirstName FROM [FHFC Membership List] INNER JOIN [Games] ON Games.Id = [FHFC Membership List].Id WHERE[Games].Id <> 1001 ORDER BY LastName, FirstName, [Games].Id");
+            if (dt.Columns.Contains("FirstName"))
+            {
+                dt.Columns.Remove("FirstName");
+            }
+            if (dt.Columns.Contains("LastName"))
+            {
+                dt.Columns.Remove("LastName");
+            }
+            SaveJsonToFile("{\"players\":" + Newtonsoft.Json.JsonConvert.SerializeObject(dt) + "}", fileName);
+        }
+        private static void RetrievePlayerIndividualInfo()
+        {
+            foreach (DataRow player in QueryAccessDatabase("SELECT DISTINCT Id FROM [Games] WHERE Id <> 1001").Rows)
+            {
+                string playerId = player["Id"].ToString();
+                DataTable dt = QueryAccessDatabase("SELECT firstName, middleName, lastName, CINT((SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + ")) AS agrade, CINT((SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) + SUM(Unknown_Senior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS senior, CINT((SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM(Unknown_Junior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS junior FROM [FHFC Membership List] WHERE ID = " + player["Id"]);
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
+                json = json.Substring(1, json.Length - 2);
+                //dt = QueryAccessDatabase("SELECT SUM(A) AS TotalA, SUM(B)AS TotalB, SUM(C)AS TotalC, SUM(OpenW) AS w, SUM([18]) AS Total18, SUM([17_5]) AS Total17_5, SUM([17]) AS Total17, SUM([16]) AS Total16, SUM([16_5sun]) AS [16_5s], SUM([16Girls]) AS [16g], SUM([16sun]) AS [16s], SUM([15]) AS Total15, SUM([15sun]) AS [15s], SUM([14]) AS Total14, SUM([14Girls]) AS [14g], SUM([14sun]) AS [14s], SUM([13]) AS Total13, SUM(Unknown_Senior) AS u FROM [Games] WHERE ID = " + player["Id"]);
+                //string playerJson = ",\"totals\":[";
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    foreach (DataColumn column in row.Table.Columns)
+                //    {
+                //        if (row[column].ToString() != "0")
+                //        {
+                //            playerJson += "{\"g\":\"" + column.ColumnName.ToLower().Replace("_", ".").Replace("total", "") + "\",\"a\":" + row[column] + "},";
+                //        }
+                //    }
+                //    playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]";
+                //}
+                //dt = QueryAccessDatabase("SELECT Year, A, B, C, OpenW AS w, [18], [17_5], [17], [16], [16_5sun] AS [16_5s], [16Girls] AS [16g], [16sun] AS [16s], [15], [15sun] AS [15s], [14], [14Girls] AS [14g], [14sun] AS [14s], [13], Unknown_Senior AS u FROM [Games] WHERE ID = " + player["Id"]);
+                //playerJson += ",\"years\":[";
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    playerJson += "{";
+                //    foreach (DataColumn column in row.Table.Columns)
+                //    {
+                //        if (row[column].ToString() != "0")
+                //        {
+                //            playerJson += "\"" + column.ColumnName.ToLower().Replace("_", ".") + "\":" + row[column] + ",";
+                //        }
+                //    }
+                //    playerJson = playerJson.Substring(0, playerJson.Length - 1) + "},";
+                //}
+                //playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]}";
+                //SaveJsonToFile(json + playerJson, playerId + ".json");
+                SaveJsonToFile(json, playerId + ".json");
+            }
         }
         private static void SaveJsonToFile(string json, string fileName)
         {
