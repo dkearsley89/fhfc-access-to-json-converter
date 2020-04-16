@@ -96,10 +96,6 @@ namespace FhfcAccessToJsonConverter
                 if (homePageRecordsToDisplay.Contains(item.Key))
                 {
                     DataTable dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "1"));
-                    if (dt.Columns.Contains("Id"))
-                    {
-                        dt.Columns.Remove("Id");
-                    }
                     if (dt.Columns.Contains("Year"))
                     {
                         dt.Columns.Remove("Year");
