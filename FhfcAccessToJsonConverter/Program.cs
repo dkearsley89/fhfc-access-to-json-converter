@@ -239,7 +239,18 @@ namespace FhfcAccessToJsonConverter
             foreach (DataRow player in QueryAccessDatabase("SELECT DISTINCT Id FROM [Games] WHERE Id <> 1001").Rows)
             {
                 string playerId = player["Id"].ToString();
-                DataTable dt = QueryAccessDatabase("SELECT firstName, middleName, lastName, CINT((SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + ")) AS agrade, CINT((SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) + SUM(Unknown_Senior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS senior, CINT((SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM(Unknown_Junior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS junior FROM [FHFC Membership List] WHERE ID = " + player["Id"]);
+                DataTable dt = QueryAccessDatabase(@"SELECT firstName, middleName, lastName, " +
+                    "CINT((SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + ")) AS agrade, " +
+                    "CINT((SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) + SUM(Unknown_Senior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS senior, " +
+                    "CINT((SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM(Unknown_Junior) FROM [Games] WHERE ID = " + player["Id"] + ")) AS junior, " +
+                    "(SELECT MIN(Year) FROM [Games] WHERE ID = " + player["Id"] + ") AS minYear, " +
+                    "(SELECT MAX(Year) FROM [Games] WHERE ID = " + player["Id"] + ") AS maxYear, " +
+                    "(SELECT COUNT(Year) FROM [Games] WHERE ID = " + player["Id"] + ") AS seasons, " +
+                    "CINT(IIf(IsNull((SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A')), 0, (SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A'))) AS aGradeGoals, " +
+                    "CINT(IIf(IsNull((SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND (Grade = 'A' OR Grade = 'B' OR Grade = 'C' OR Grade = 'OpenW'))), 0, (SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND (Grade = 'A' OR Grade = 'B' OR Grade = 'C' OR Grade = 'OpenW')))) AS seniorGoals, " +
+                    "CINT(IIf(IsNull((SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND (Grade = 'U18' OR Grade = 'U17.5' OR Grade = 'U16sun' OR Grade = 'U16Girls' OR Grade = 'U16.5sun' OR Grade = 'U16' OR Grade = 'U15sun' OR Grade = 'U14sun' OR Grade = 'U14Girls' OR Grade = 'U14' OR Grade = 'U13'))), 0, (SELECT SUM(Goals) FROM[Games Details Per Round] WHERE ID = " + player["Id"] + " AND (Grade = 'U18' OR Grade = 'U17.5' OR Grade = 'U16sun' OR Grade = 'U16Girls' OR Grade = 'U16.5sun' OR Grade = 'U16' OR Grade = 'U15sun' OR Grade = 'U14sun' OR Grade = 'U14Girls' OR Grade = 'U14' OR Grade = 'U13')))) AS juniorGoals " +
+                    "FROM [FHFC Membership List] " +
+                    "WHERE ID = " + player["Id"]);
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
                 json = json.Substring(1, json.Length - 2);
                 //dt = QueryAccessDatabase("SELECT SUM(A) AS TotalA, SUM(B)AS TotalB, SUM(C)AS TotalC, SUM(OpenW) AS w, SUM([18]) AS Total18, SUM([17_5]) AS Total17_5, SUM([17]) AS Total17, SUM([16]) AS Total16, SUM([16_5sun]) AS [16_5s], SUM([16Girls]) AS [16g], SUM([16sun]) AS [16s], SUM([15]) AS Total15, SUM([15sun]) AS [15s], SUM([14]) AS Total14, SUM([14Girls]) AS [14g], SUM([14sun]) AS [14s], SUM([13]) AS Total13, SUM(Unknown_Senior) AS u FROM [Games] WHERE ID = " + player["Id"]);
