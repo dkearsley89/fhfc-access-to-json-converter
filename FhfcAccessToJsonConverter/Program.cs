@@ -81,8 +81,8 @@ namespace FhfcAccessToJsonConverter
             RetrieveHomePageInfo();
             RetrieveSummaryRecords();
             RetrieveRecords();
-            //RetrieveMilestones("milestones.json");
-            RetrievePlayers("players.json");
+            //RetrieveMilestones();
+            RetrievePlayers();
             RetrievePlayerIndividualInfo();
             Console.WriteLine("Finishing FhfcAccessToJsonConverter");
             Console.Read();
@@ -221,7 +221,7 @@ namespace FhfcAccessToJsonConverter
             //    sw.Write(jsonToReturn);
             //}
         }
-        private static void RetrievePlayers(string fileName)
+        private static void RetrievePlayers()
         {
             DataTable dt = QueryAccessDatabase("SELECT DISTINCT[Games].Id AS id, FirstName & ' ' & LastName AS name, LastName, FirstName FROM [FHFC Membership List] INNER JOIN [Games] ON Games.Id = [FHFC Membership List].Id WHERE[Games].Id <> 1001 ORDER BY LastName, FirstName, [Games].Id");
             if (dt.Columns.Contains("FirstName"))
@@ -232,7 +232,7 @@ namespace FhfcAccessToJsonConverter
             {
                 dt.Columns.Remove("LastName");
             }
-            SaveJsonToFile("{\"players\":" + Newtonsoft.Json.JsonConvert.SerializeObject(dt) + "}", fileName);
+            SaveJsonToFile("{\"players\":" + Newtonsoft.Json.JsonConvert.SerializeObject(dt) + "}", "players.json");
         }
         private static void RetrievePlayerIndividualInfo()
         {
@@ -252,37 +252,66 @@ namespace FhfcAccessToJsonConverter
                     "FROM [FHFC Membership List] " +
                     "WHERE ID = " + player["Id"]);
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
-                json = json.Substring(1, json.Length - 2);
-                //dt = QueryAccessDatabase("SELECT SUM(A) AS TotalA, SUM(B)AS TotalB, SUM(C)AS TotalC, SUM(OpenW) AS w, SUM([18]) AS Total18, SUM([17_5]) AS Total17_5, SUM([17]) AS Total17, SUM([16]) AS Total16, SUM([16_5sun]) AS [16_5s], SUM([16Girls]) AS [16g], SUM([16sun]) AS [16s], SUM([15]) AS Total15, SUM([15sun]) AS [15s], SUM([14]) AS Total14, SUM([14Girls]) AS [14g], SUM([14sun]) AS [14s], SUM([13]) AS Total13, SUM(Unknown_Senior) AS u FROM [Games] WHERE ID = " + player["Id"]);
-                //string playerJson = ",\"totals\":[";
-                //foreach (DataRow row in dt.Rows)
-                //{
-                //    foreach (DataColumn column in row.Table.Columns)
-                //    {
-                //        if (row[column].ToString() != "0")
-                //        {
-                //            playerJson += "{\"g\":\"" + column.ColumnName.ToLower().Replace("_", ".").Replace("total", "") + "\",\"a\":" + row[column] + "},";
-                //        }
-                //    }
-                //    playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]";
-                //}
-                //dt = QueryAccessDatabase("SELECT Year, A, B, C, OpenW AS w, [18], [17_5], [17], [16], [16_5sun] AS [16_5s], [16Girls] AS [16g], [16sun] AS [16s], [15], [15sun] AS [15s], [14], [14Girls] AS [14g], [14sun] AS [14s], [13], Unknown_Senior AS u FROM [Games] WHERE ID = " + player["Id"]);
-                //playerJson += ",\"years\":[";
-                //foreach (DataRow row in dt.Rows)
-                //{
-                //    playerJson += "{";
-                //    foreach (DataColumn column in row.Table.Columns)
-                //    {
-                //        if (row[column].ToString() != "0")
-                //        {
-                //            playerJson += "\"" + column.ColumnName.ToLower().Replace("_", ".") + "\":" + row[column] + ",";
-                //        }
-                //    }
-                //    playerJson = playerJson.Substring(0, playerJson.Length - 1) + "},";
-                //}
-                //playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]}";
-                //SaveJsonToFile(json + playerJson, playerId + ".json");
-                SaveJsonToFile(json, playerId + ".json");
+                json = json.Substring(1, json.Length - 3);
+                dt = QueryAccessDatabase(@"SELECT Year AS y, " +
+                    "A AS aGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A' AND [Games Details Per Round].Year = [Games].Year) AS aGoals, " +
+                    "B AS bGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'B' AND [Games Details Per Round].Year = [Games].Year) AS bGoals, " +
+                    "C AS cGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'C' AND [Games Details Per Round].Year = [Games].Year) AS cGoals, " +
+                    "OpenW AS wGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'OpenW' AND [Games Details Per Round].Year = [Games].Year) AS wGoals, " +
+                    "Unknown_Senior AS uGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'Unknown_Senior' AND [Games Details Per Round].Year = [Games].Year) AS uGoals, " +
+                    "[18] AS u18Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U18' AND [Games Details Per Round].Year = [Games].Year) AS u18Goals, " +
+                    "[17_5] AS u175Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U17.5' AND [Games Details Per Round].Year = [Games].Year) AS u175Goals, " +
+                    "[17] AS u17Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U17' AND [Games Details Per Round].Year = [Games].Year) AS u17Goals, " +
+                    "[16] AS u16Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16' AND [Games Details Per Round].Year = [Games].Year) AS u16Goals, " +
+                    "[15] AS u15Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U15' AND [Games Details Per Round].Year = [Games].Year) AS u15Goals, " +
+                    "[14] AS u14Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14' AND [Games Details Per Round].Year = [Games].Year) AS u14Goals, " +
+                    "[13] AS u13Games, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U13' AND [Games Details Per Round].Year = [Games].Year) AS u13Goals, " +
+                    "[16_5sun] AS u165sunGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16.5sun' AND [Games Details Per Round].Year = [Games].Year) AS u165sunGoals, " +
+                    "[16sun] AS u16sunGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16sun' AND [Games Details Per Round].Year = [Games].Year) AS u16sunGoals, " +
+                    "[15sun] AS u15sunGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U15sun' AND [Games Details Per Round].Year = [Games].Year) AS u15sunGoals, " +
+                    "[14sun] AS u14sunGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14sun' AND [Games Details Per Round].Year = [Games].Year) AS u14sunGoals, " +
+                    "[16Girls] AS u16girlsGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16Girls' AND [Games Details Per Round].Year = [Games].Year) AS u16girlsGoals, " +
+                    "[14Girls] AS u14girlsGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14Girls' AND [Games Details Per Round].Year = [Games].Year) AS u14girlsGoals " +
+                    "FROM [Games] WHERE ID = " + player["Id"] + " " +
+                    "UNION " +
+                    "SELECT 'Totals', (SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A'), " +
+                    "(SELECT SUM(B) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'B'), " +
+                    "(SELECT SUM(C) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'C'), " +
+                    "(SELECT SUM(OpenW) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'OpenW'), " +
+                    "(SELECT SUM(Unknown_Senior) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'Unknown_Senior'), " +
+                    "(SELECT SUM([18]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U18'), " +
+                    "(SELECT SUM([17_5]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U17.5'), " +
+                    "(SELECT SUM([17]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U17'), " +
+                    "(SELECT SUM([16]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16'), " +
+                    "(SELECT SUM([15]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U15'), " +
+                    "(SELECT SUM([14]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14'), " +
+                    "(SELECT SUM([13]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U13'), " +
+                    "(SELECT SUM([16_5sun]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16.5sun'), " +
+                    "(SELECT SUM([16sun]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16sun'), " +
+                    "(SELECT SUM([15sun]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U15sun'), " +
+                    "(SELECT SUM([14sun]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14sun'), " +
+                    "(SELECT SUM([16Girls]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U16Girls'), " +
+                    "(SELECT SUM([14Girls]) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14Girls') " +
+                    "FROM (SELECT COUNT(*) FROM [Games] WHERE 1 = 0) AS dual");
+                string playerJson = ",\"years\":[";
+                foreach (DataRow row in dt.Rows)
+                {
+                    playerJson += "{";
+                    foreach (DataColumn column in row.Table.Columns)
+                    {
+                        if (column.ColumnName == "y")
+                        {
+                            playerJson += "\"" + column.ColumnName + "\":\"" + row[column] + "\",";
+                        }
+                        else if (!string.IsNullOrEmpty(row[column].ToString()) && row[column].ToString() != "0")
+                        {
+                            playerJson += "\"" + column.ColumnName + "\":" + row[column] + ",";
+                        }
+                    }
+                    playerJson = playerJson.Substring(0, playerJson.Length - 1) + "},";
+                }
+                playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]}";
+                SaveJsonToFile(json + playerJson, playerId + ".json");
             }
         }
         private static void SaveJsonToFile(string json, string fileName)
