@@ -338,7 +338,7 @@ namespace FhfcAccessToJsonConverter
                     "[14Girls] AS u14girlsGames, (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'U14Girls' AND [Games Details Per Round].Year = [Games].Year) AS u14girlsGoals " +
                     "FROM [Games] WHERE ID = " + player["Id"] + " " +
                     "UNION " +
-                    "SELECT 'Totals', (SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A'), " +
+                    "SELECT 'Total', (SELECT SUM(A) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'A'), " +
                     "(SELECT SUM(B) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'B'), " +
                     "(SELECT SUM(C) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'C'), " +
                     "(SELECT SUM(OpenW) FROM [Games] WHERE ID = " + player["Id"] + "), (SELECT SUM(Goals) FROM [Games Details Per Round] WHERE ID = " + player["Id"] + " AND Grade = 'OpenW'), " +
