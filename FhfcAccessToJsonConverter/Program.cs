@@ -164,6 +164,8 @@ namespace FhfcAccessToJsonConverter
         private static OleDbConnection _accessConnection;
         private static void Main()
         {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             Console.WriteLine("Starting FhfcAccessToJsonConverter");
             RetrieveHomePageInfo();
             RetrieveSummaryRecords();
@@ -171,7 +173,10 @@ namespace FhfcAccessToJsonConverter
             RetrieveMilestones();
             RetrievePlayers();
             RetrievePlayerIndividualInfo();
-            Console.WriteLine("Finishing FhfcAccessToJsonConverter");
+            sw.Stop();
+            TimeSpan timeTaken = sw.Elapsed;
+            Console.WriteLine("Finished FhfcAccessToJsonConverter");
+            Console.WriteLine("Time: " + timeTaken.ToString(@"mm\:ss\.ff"));
             Console.Read();
         }
         private static void RetrieveHomePageInfo()
