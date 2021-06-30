@@ -213,10 +213,6 @@ namespace FhfcAccessToJsonConverter
             foreach (KeyValuePair<string, string[]> item in RecordSqlStatements)
             {
                 DataTable dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "5"));
-                if (dt.Columns.Contains("Id"))
-                {
-                    dt.Columns.Remove("Id");
-                }
                 if (dt.Columns.Contains("Year"))
                 {
                     dt.Columns.Remove("Year");
@@ -239,10 +235,6 @@ namespace FhfcAccessToJsonConverter
             foreach (KeyValuePair<string, string[]> item in RecordSqlStatements)
             {
                 DataTable dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "100"));
-                if (dt.Columns.Contains("Id"))
-                {
-                    dt.Columns.Remove("Id");
-                }
                 if (dt.Columns.Contains("Year"))
                 {
                     dt.Columns.Remove("Year");

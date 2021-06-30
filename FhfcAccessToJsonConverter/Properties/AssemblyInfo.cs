@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FhfcAccessToJsonConverter")]
-[assembly: AssemblyCopyright("Copyright © David Kearsley 2020")]
+[assembly: AssemblyCopyright("Copyright © David Kearsley 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -24,4 +24,4 @@ using System.Runtime.InteropServices;
 //      Revision
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.4.*")]
+[assembly: AssemblyVersion("1.5.*")]
