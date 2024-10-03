@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhfcAccessToJsonConverter", "FhfcAccessToJsonConverter\FhfcAccessToJsonConverter.csproj", "{4E419471-A9B8-4816-972A-69781855D023}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhfcAccessToJsonConverter", "FhfcAccessToJsonConverter\FhfcAccessToJsonConverter.csproj", "{05F2590E-5AF1-469E-92FC-B0BD227FC966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E419471-A9B8-4816-972A-69781855D023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E419471-A9B8-4816-972A-69781855D023}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E419471-A9B8-4816-972A-69781855D023}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E419471-A9B8-4816-972A-69781855D023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F2590E-5AF1-469E-92FC-B0BD227FC966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F2590E-5AF1-469E-92FC-B0BD227FC966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F2590E-5AF1-469E-92FC-B0BD227FC966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F2590E-5AF1-469E-92FC-B0BD227FC966}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {991C589A-94B3-4EDC-9A3A-E6322C491F61}
+		SolutionGuid = {903F648C-D1D2-4511-BD45-A7F2AD9E9439}
 	EndGlobalSection
 EndGlobal
