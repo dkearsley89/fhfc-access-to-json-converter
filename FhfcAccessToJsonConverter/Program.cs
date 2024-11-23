@@ -20,18 +20,14 @@ namespace FhfcAccessToJsonConverter
                 .Build();
             AccessDatabasePath = configuration["AppSettings:AccessDatabasePath"] ?? "";
             JsonFilePath = configuration["AppSettings:JsonFilePath"] ?? "";
-            //TODO Add new Records
-            // - Most Games as Captain
-            // - Most Finals
-            // - Most Grand Finals
-            // - Most Premierships
-            // - Coaching Records
             RetrieveHomePageInfo();
             RetrieveSummaryRecords();
             RetrieveRecords();
             RetrieveMilestones();
             RetrievePlayers();
+            //TODO RetrieveCoaches();
             RetrievePlayerIndividualInfo();
+            //TODO RetrieveCoachIndividualInfo();
             sw.Stop();
             Console.WriteLine("Finished FhfcAccessToJsonConverter");
             Console.WriteLine("Time: " + sw.Elapsed.ToString(@"mm\:ss\.ff"));
