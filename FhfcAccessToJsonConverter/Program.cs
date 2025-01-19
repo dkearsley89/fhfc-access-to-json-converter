@@ -7,8 +7,7 @@ using System.Diagnostics;
 namespace FhfcAccessToJsonConverter
 {
     internal class Program
-    {
-        private static OleDbConnection? _accessConnection;
+    {        
         private static string? AccessDatabasePath;
         private static string? JsonFilePath;
         static void Main()
@@ -25,9 +24,9 @@ namespace FhfcAccessToJsonConverter
             RetrieveRecords();
             RetrieveMilestones();
             RetrievePlayers();
-            //TODO RetrieveCoaches();
+            RetrieveCoaches();
             RetrievePlayerIndividualInfo();
-            //TODO RetrieveCoachIndividualInfo();
+            RetrieveCoachIndividualInfo();
             sw.Stop();
             Console.WriteLine("Finished FhfcAccessToJsonConverter");
             Console.WriteLine("Time: " + sw.Elapsed.ToString(@"mm\:ss\.ff"));
@@ -165,6 +164,19 @@ namespace FhfcAccessToJsonConverter
             }
             SaveJsonToFile("{\"players\":" + JsonConvert.SerializeObject(dt) + "}", "players.json");
         }
+        private static void RetrieveCoaches()
+        {
+            var dt = QueryAccessDatabase("SELECT DISTINCT[GamesCoaches].Id AS id, FirstName & ' ' & LastName AS name, LastName, FirstName FROM [FHFC Membership List] INNER JOIN [GamesCoaches] ON GamesCoaches.Id = [FHFC Membership List].Id ORDER BY LastName, FirstName, [GamesCoaches].Id");
+            if (dt.Columns.Contains("FirstName"))
+            {
+                dt.Columns.Remove("FirstName");
+            }
+            if (dt.Columns.Contains("LastName"))
+            {
+                dt.Columns.Remove("LastName");
+            }
+            SaveJsonToFile("{\"coaches\":" + JsonConvert.SerializeObject(dt) + "}", "coaches.json");
+        }
         private static void RetrievePlayerIndividualInfo()
         {
             foreach (DataRow player in QueryAccessDatabase("SELECT DISTINCT Id FROM [Games] WHERE Id <> 1001").Rows)
@@ -251,6 +263,25 @@ namespace FhfcAccessToJsonConverter
                 SaveJsonToFile(json + playerJson, playerId + ".json");
             }
         }
+        private static void RetrieveCoachIndividualInfo()
+        {
+            foreach (DataRow coach in QueryAccessDatabase("SELECT DISTINCT Id FROM GamesCoaches").Rows)
+            {
+                var coachId = coach["Id"].ToString();
+                var dt = QueryAccessDatabase(@$"SELECT firstName, middleName, lastName,
+                                               (SELECT SUM(A) FROM GamesCoaches WHERE ID = {coachId}) AS agrade,
+                                               (SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) FROM GamesCoaches WHERE ID = {coachId}) AS senior,
+                                               (SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([17Girls]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM([13sun]) FROM GamesCoaches WHERE ID = {coachId}) AS junior,
+                                               (SELECT MIN(Year) FROM GamesCoaches WHERE ID = {coachId}) AS minYear,
+                                               (SELECT MAX(Year) FROM GamesCoaches WHERE ID = {coachId}) AS maxYear,
+                                               (SELECT COUNT(Year) FROM GamesCoaches WHERE ID = {coachId}) AS seasons
+                                               FROM [FHFC Membership List]
+                                               WHERE ID = {coachId}");
+                var json = JsonConvert.SerializeObject(dt);
+                json = json.Substring(1, json.Length - 2);
+                SaveJsonToFile(json, coachId + "-coach.json");
+            }
+        }
         private static void SaveJsonToFile(string json, string fileName)
         {
             using var sw = new StreamWriter(JsonFilePath + fileName);
@@ -258,22 +289,24 @@ namespace FhfcAccessToJsonConverter
         }
         private static DataTable QueryAccessDatabase(string sql)
         {
+            OleDbConnection accessConnection;
             try
             {
-                _accessConnection = new OleDbConnection(AccessDatabasePath);
+                accessConnection = new OleDbConnection(AccessDatabasePath);
             }
             catch (Exception ex)
             {
                 Console.Write("Error: Failed to create a database connection.\n{0}", ex.Message);
                 return new DataTable();
-            }
-            var ds = new DataSet();
+            }            
             try
-            {
-                var accessCommand = new OleDbCommand(sql, _accessConnection);
+            {                
+                var accessCommand = new OleDbCommand(sql, accessConnection);
                 var dataAdapter = new OleDbDataAdapter(accessCommand);
-                _accessConnection.Open();
+                accessConnection.Open();
+                var ds = new DataSet();
                 dataAdapter.Fill(ds);
+                return ds.Tables[0];
             }
             catch (Exception ex)
             {
@@ -282,9 +315,8 @@ namespace FhfcAccessToJsonConverter
             }
             finally
             {
-                _accessConnection.Close();
-            }
-            return ds.Tables[0];
+                accessConnection.Close();
+            }            
         }
         private static string GetDaySuffix(int day)
         {
