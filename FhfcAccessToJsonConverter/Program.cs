@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace FhfcAccessToJsonConverter
 {
     internal class Program
-    {        
+    {
         private static string? AccessDatabasePath;
         private static string? JsonFilePath;
         static void Main()
@@ -34,14 +34,14 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveHomePageInfo()
         {
-            //TODO Possibly change this to include 'Most Games as Captain'???
-            string[] homePageRecordsToDisplay = ["Most Senior Games", "Most A Grade Games", "Most Junior Games", "Most Junior Goals", "Most Goals in a Season - Senior", "Most A Grade Goals"];
+            string[] homePageRecordsToDisplay = ["Most Senior Games", "Most A Grade Games", "Most A Grade Goals", "Most A Grade Premierships", "Most Open Women's Games", "Most Junior Games"];
             string jsonToReturn = "{\"records\":[";
-            foreach (var item in SqlStatements.RecordSqlStatements)
+            foreach (var record in homePageRecordsToDisplay)
             {
-                if (homePageRecordsToDisplay.Contains(item.Key))
+                SqlStatements.RecordSqlStatements.TryGetValue(record, out var dictionaryItem);
+                if (dictionaryItem != null)
                 {
-                    var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "1"));
+                    var dt = QueryAccessDatabase(dictionaryItem[0].Replace("[NumberOfRecords]", "1"));
                     if (dt.Columns.Contains("Year"))
                     {
                         dt.Columns.Remove("Year");
@@ -54,7 +54,7 @@ namespace FhfcAccessToJsonConverter
                     {
                         dt.Columns.Remove("Grade");
                     }
-                    jsonToReturn += "{\"name\":\"" + item.Key + "\",\"label\":\"" + item.Value[1] + "\",\"data\":" + JsonConvert.SerializeObject(dt) + "},";
+                    jsonToReturn += "{\"name\":\"" + record + "\",\"label\":\"" + dictionaryItem[1] + "\",\"data\":" + JsonConvert.SerializeObject(dt) + "},";
                 }
             }
             jsonToReturn = jsonToReturn.TrimEnd(',') + "]}";
@@ -148,7 +148,7 @@ namespace FhfcAccessToJsonConverter
                 }
                 jsonToReturn += "},";
             }
-            jsonToReturn = jsonToReturn.Substring(0, jsonToReturn.Length - 1) + "]}";
+            jsonToReturn = string.Concat(jsonToReturn.AsSpan(0, jsonToReturn.Length - 1), "]}");
             SaveJsonToFile(jsonToReturn, "milestones.json");
         }
         private static void RetrievePlayers()
@@ -259,7 +259,7 @@ namespace FhfcAccessToJsonConverter
                     }
                     playerJson = playerJson.Substring(0, playerJson.Length - 1) + "},";
                 }
-                playerJson = playerJson.Substring(0, playerJson.Length - 1) + "]}";
+                playerJson = string.Concat(playerJson.AsSpan(0, playerJson.Length - 1), "]}");
                 SaveJsonToFile(json + playerJson, playerId + ".json");
             }
         }
@@ -298,9 +298,9 @@ namespace FhfcAccessToJsonConverter
             {
                 Console.Write("Error: Failed to create a database connection.\n{0}", ex.Message);
                 return new DataTable();
-            }            
+            }
             try
-            {                
+            {
                 var accessCommand = new OleDbCommand(sql, accessConnection);
                 var dataAdapter = new OleDbDataAdapter(accessCommand);
                 accessConnection.Open();
@@ -316,7 +316,7 @@ namespace FhfcAccessToJsonConverter
             finally
             {
                 accessConnection.Close();
-            }            
+            }
         }
         private static string GetDaySuffix(int day)
         {
