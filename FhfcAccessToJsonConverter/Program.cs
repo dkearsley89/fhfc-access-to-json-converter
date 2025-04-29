@@ -63,15 +63,16 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveSummaryRecords()
         {
+            var numberOfRecords = 5;
             string jsonToReturn = "{\"records\":[";
             foreach (var item in SqlStatements.RecordSqlStatements)
             {
-                var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "5"));
+                var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", numberOfRecords.ToString()));
                 if (dt == null)
                 {
                     return;
                 }
-                while (dt.Rows.Count > 5)
+                while (dt.Rows.Count > numberOfRecords)
                 {
                     dt.Rows.RemoveAt(dt.Rows.Count - 1);
                 }
@@ -87,21 +88,22 @@ namespace FhfcAccessToJsonConverter
                 {
                     dt.Columns.Remove("Grade");
                 }
-                jsonToReturn += "{\"name\":\"" + item.Key + "\",\"headers\":{\"c1\":\"Name\",\"c2\":\"" + item.Value[1] + "\"},\"data\":" + JsonConvert.SerializeObject(dt) + "},";
+                jsonToReturn += "{\"name\":\"" + item.Key + "\",\"headers\":{\"c1\":\"Name\",\"c2\":\"" + item.Value[1] + "\"},\"info\":\"" + (item.Value.ElementAtOrDefault(2) ?? string.Empty) + "\",\"data\":" + JsonConvert.SerializeObject(dt) + "},";
             }
             jsonToReturn = jsonToReturn.TrimEnd(',') + "]}";
             SaveJsonToFile(jsonToReturn, "records.json");
         }
         private static void RetrieveRecords()
         {
+            var numberOfRecords = 100;
             foreach (var item in SqlStatements.RecordSqlStatements)
             {
-                var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", "100"));
+                var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", numberOfRecords.ToString()));
                 if (dt == null)
                 {
                     return;
                 }
-                while (dt.Rows.Count > 100)
+                while (dt.Rows.Count > numberOfRecords)
                 {
                     dt.Rows.RemoveAt(dt.Rows.Count - 1);
                 }
@@ -117,7 +119,7 @@ namespace FhfcAccessToJsonConverter
                 {
                     dt.Columns.Remove("Grade");
                 }
-                SaveJsonToFile("{\"name\":\"" + item.Key + "\",\"headers\":{\"c1\":\"Name\",\"c2\":\"" + item.Value[1] + "\"},\"data\":" + JsonConvert.SerializeObject(dt) + "}", item.Key + ".json");
+                SaveJsonToFile("{\"name\":\"" + item.Key + "\",\"headers\":{\"c1\":\"Name\",\"c2\":\"" + item.Value[1] + "\"},\"info\":\"" + (item.Value.ElementAtOrDefault(2) ?? string.Empty) + "\",\"data\":" + JsonConvert.SerializeObject(dt) + "}", item.Key + ".json");
             }
         }
         private static void RetrieveMilestones()
@@ -153,7 +155,7 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrievePlayers()
         {
-            var dt = QueryAccessDatabase("SELECT DISTINCT[Games].Id AS id, FirstName & ' ' & LastName AS name, LastName, FirstName FROM [FHFC Membership List] INNER JOIN [Games] ON Games.Id = [FHFC Membership List].Id WHERE[Games].Id <> 1001 ORDER BY LastName, FirstName, [Games].Id");
+            var dt = QueryAccessDatabase("SELECT DISTINCT [G].Id AS id, [M].FirstName & ' ' & [M].LastName AS name, [M].LastName, [M].FirstName FROM [FHFC Membership List] AS [M] INNER JOIN [Games] AS [G] ON [G].Id = [M].Id WHERE [G].Id <> 1001 ORDER BY [M].LastName, [M].FirstName, [G].Id");
             if (dt.Columns.Contains("FirstName"))
             {
                 dt.Columns.Remove("FirstName");
@@ -166,7 +168,7 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveCoaches()
         {
-            var dt = QueryAccessDatabase("SELECT DISTINCT[GamesCoaches].Id AS id, FirstName & ' ' & LastName AS name, LastName, FirstName FROM [FHFC Membership List] INNER JOIN [GamesCoaches] ON GamesCoaches.Id = [FHFC Membership List].Id ORDER BY LastName, FirstName, [GamesCoaches].Id");
+            var dt = QueryAccessDatabase("SELECT DISTINCT [G].Id AS id, [M].FirstName & ' ' & [M].LastName AS name, [M].LastName, [M].FirstName FROM [FHFC Membership List] AS [M] INNER JOIN [GamesCoaches] AS [G] ON [G].Id = [M].Id ORDER BY [M].LastName, [M].FirstName, [G].Id");
             if (dt.Columns.Contains("FirstName"))
             {
                 dt.Columns.Remove("FirstName");
@@ -179,6 +181,7 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrievePlayerIndividualInfo()
         {
+            //TODO Re-write all SQL Statements
             foreach (DataRow player in QueryAccessDatabase("SELECT DISTINCT Id FROM [Games] WHERE Id <> 1001").Rows)
             {
                 var playerId = player["Id"].ToString();
@@ -280,6 +283,7 @@ namespace FhfcAccessToJsonConverter
                 var json = JsonConvert.SerializeObject(dt);
                 json = json.Substring(1, json.Length - 2);
                 SaveJsonToFile(json, coachId + "-coach.json");
+                //TODO Add Yearly Coach SQL Statements
             }
         }
         private static void SaveJsonToFile(string json, string fileName)
