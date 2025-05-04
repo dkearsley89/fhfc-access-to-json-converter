@@ -272,9 +272,9 @@ namespace FhfcAccessToJsonConverter
             {
                 var coachId = coach["Id"].ToString();
                 var dt = QueryAccessDatabase(@$"SELECT firstName, middleName, lastName,
-                                               (SELECT SUM(A) FROM GamesCoaches WHERE ID = {coachId}) AS agrade,
-                                               (SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) FROM GamesCoaches WHERE ID = {coachId}) AS senior,
-                                               (SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([17Girls]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM([13sun]) FROM GamesCoaches WHERE ID = {coachId}) AS junior,
+                                               CINT((SELECT SUM(A) FROM GamesCoaches WHERE ID = {coachId})) AS agrade,
+                                               CINT((SELECT SUM(A) + SUM(B) + SUM(C) + SUM(OpenW) FROM GamesCoaches WHERE ID = {coachId})) AS senior,
+                                               CINT((SELECT SUM([18]) + SUM([17_5]) + SUM([17]) + SUM([17Girls]) + SUM([16]) + SUM([16_5sun]) + SUM([16Girls]) + SUM([16sun]) + SUM([15]) + SUM([15sun]) + SUM([14]) + SUM([14Girls]) + SUM([14sun]) + SUM([13]) + SUM([13sun]) FROM GamesCoaches WHERE ID = {coachId})) AS junior,
                                                (SELECT MIN(Year) FROM GamesCoaches WHERE ID = {coachId}) AS minYear,
                                                (SELECT MAX(Year) FROM GamesCoaches WHERE ID = {coachId}) AS maxYear,
                                                (SELECT COUNT(Year) FROM GamesCoaches WHERE ID = {coachId}) AS seasons
