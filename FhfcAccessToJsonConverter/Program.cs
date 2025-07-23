@@ -63,7 +63,7 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveSummaryRecords()
         {
-            var numberOfRecords = 5;
+            var numberOfRecords = 10;
             string jsonToReturn = "{\"records\":[";
             foreach (var item in SqlStatements.RecordSqlStatements)
             {
@@ -95,7 +95,7 @@ namespace FhfcAccessToJsonConverter
         }
         private static void RetrieveRecords()
         {
-            var numberOfRecords = 100;
+            var numberOfRecords = 1000;
             foreach (var item in SqlStatements.RecordSqlStatements)
             {
                 var dt = QueryAccessDatabase(item.Value[0].Replace("[NumberOfRecords]", numberOfRecords.ToString()));
